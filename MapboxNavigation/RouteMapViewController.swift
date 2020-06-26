@@ -218,6 +218,8 @@ class RouteMapViewController: UIViewController {
         mapView.enableFrameByFrameCourseViewTracking(for: 3)
         isInOverviewMode = false
 
+        
+        mapView.updateCourseTracking(location: mapView.userLocationForCourseTracking)
         updateCameraAltitude(for: router.routeProgress)
         
         mapView.addArrow(route: router.route,
@@ -238,10 +240,10 @@ class RouteMapViewController: UIViewController {
 
     @objc func toggleOverview(_ sender: Any) {
         mapView.enableFrameByFrameCourseViewTracking(for: 3)
-        if let coordinates = router.route.shape?.coordinates,
-            let userLocation = router.location?.coordinate {
+        if let shape = router.route.shape,
+            let userLocation = router.location {
             mapView.contentInset = contentInset(forOverviewing: true)
-            mapView.setOverheadCameraView(from: userLocation, along: coordinates, for: contentInset(forOverviewing: true))
+            mapView.setOverheadCameraView(from: userLocation, along: shape, for: contentInset(forOverviewing: true))
         }
         isInOverviewMode = true
     }
@@ -412,9 +414,9 @@ class RouteMapViewController: UIViewController {
         guard let height = navigationView.endOfRouteHeightConstraint?.constant else { return }
         let insets = UIEdgeInsets(top: topBannerContainerView.bounds.height, left: 20, bottom: height + 20, right: 20)
         
-        if let coordinates = route.shape?.coordinates, let userLocation = navService.router.location?.coordinate {
-            let slicedLine = Polyline(coordinates).sliced(from: userLocation).coordinates
-            let line = MGLPolyline(coordinates: slicedLine, count: UInt(slicedLine.count))
+        if let shape = route.shape, let userLocation = navService.router.location?.coordinate, !shape.coordinates.isEmpty {
+            let slicedLineString = shape.sliced(from: userLocation)!
+            let line = MGLPolyline(slicedLineString)
 
             let camera = navigationView.mapView.cameraThatFitsShape(line, direction: navigationView.mapView.camera.heading, edgePadding: insets)
             camera.pitch = 0
@@ -491,9 +493,9 @@ extension RouteMapViewController: NavigationComponent {
         }
         
         if isInOverviewMode {
-            if let coordinates = route.shape?.coordinates, let userLocation = router.location?.coordinate {
+            if let shape = route.shape, let userLocation = router.location {
                 mapView.contentInset = contentInset(forOverviewing: true)
-                mapView.setOverheadCameraView(from: userLocation, along: coordinates, for: contentInset(forOverviewing: true))
+                mapView.setOverheadCameraView(from: userLocation, along: shape, for: contentInset(forOverviewing: true))
             }
         } else {
             mapView.tracksUserCourse = true
@@ -617,12 +619,12 @@ extension RouteMapViewController: NavigationViewDelegate {
     }
 
     func labelCurrentRoadFeature(at location: CLLocation) {
-        guard let style = mapView.style, let stepShape = router.routeProgress.currentLegProgress.currentStep.shape else {
+        guard let style = mapView.style, let stepShape = router.routeProgress.currentLegProgress.currentStep.shape, !stepShape.coordinates.isEmpty else {
                 return
         }
 
         let closestCoordinate = location.coordinate
-        let roadLabelLayerIdentifier = "roadLabelLayer"
+        let roadLabelStyleLayerIdentifier = "\(identifierNamespace).roadLabels"
         var streetsSources: [MGLVectorTileSource] = style.sources.compactMap {
             $0 as? MGLVectorTileSource
             }.filter {
@@ -636,8 +638,8 @@ extension RouteMapViewController: NavigationViewDelegate {
             streetsSources.append(source)
         }
 
-        if let mapboxStreetsSource = streetsSources.first, style.layer(withIdentifier: roadLabelLayerIdentifier) == nil {
-            let streetLabelLayer = MGLLineStyleLayer(identifier: roadLabelLayerIdentifier, source: mapboxStreetsSource)
+        if let mapboxStreetsSource = streetsSources.first, style.layer(withIdentifier: roadLabelStyleLayerIdentifier) == nil {
+            let streetLabelLayer = MGLLineStyleLayer(identifier: roadLabelStyleLayerIdentifier, source: mapboxStreetsSource)
             streetLabelLayer.sourceLayerIdentifier = mapboxStreetsSource.roadLabelLayerIdentifier
             streetLabelLayer.lineOpacity = NSExpression(forConstantValue: 1)
             streetLabelLayer.lineWidth = NSExpression(forConstantValue: 20)
@@ -646,7 +648,7 @@ extension RouteMapViewController: NavigationViewDelegate {
         }
 
         let userPuck = mapView.convert(closestCoordinate, toPointTo: mapView)
-        let features = mapView.visibleFeatures(at: userPuck, styleLayerIdentifiers: Set([roadLabelLayerIdentifier]))
+        let features = mapView.visibleFeatures(at: userPuck, styleLayerIdentifiers: Set([roadLabelStyleLayerIdentifier]))
         var smallestLabelDistance = Double.infinity
         var currentName: String?
         var currentShieldName: NSAttributedString?
@@ -661,14 +663,15 @@ extension RouteMapViewController: NavigationViewDelegate {
             }
 
             for line in allLines {
+                guard line.pointCount > 0 else { continue }
                 let featureCoordinates =  Array(UnsafeBufferPointer(start: line.coordinates, count: Int(line.pointCount)))
-                let featurePolyline = Polyline(featureCoordinates)
-                let slicedLine = stepShape.sliced(from: closestCoordinate)
+                let featurePolyline = LineString(featureCoordinates)
+                let slicedLine = stepShape.sliced(from: closestCoordinate)!
 
                 let lookAheadDistance: CLLocationDistance = 10
-                guard let pointAheadFeature = featurePolyline.sliced(from: closestCoordinate).coordinateFromStart(distance: lookAheadDistance) else { continue }
+                guard let pointAheadFeature = featurePolyline.sliced(from: closestCoordinate)!.coordinateFromStart(distance: lookAheadDistance) else { continue }
                 guard let pointAheadUser = slicedLine.coordinateFromStart(distance: lookAheadDistance) else { continue }
-                guard let reversedPoint = Polyline(featureCoordinates.reversed()).sliced(from: closestCoordinate).coordinateFromStart(distance: lookAheadDistance) else { continue }
+                guard let reversedPoint = LineString(featureCoordinates.reversed()).sliced(from: closestCoordinate)!.coordinateFromStart(distance: lookAheadDistance) else { continue }
 
                 let distanceBetweenPointsAhead = pointAheadFeature.distance(to: pointAheadUser)
                 let distanceBetweenReversedPoint = reversedPoint.distance(to: pointAheadUser)
@@ -703,32 +706,18 @@ extension RouteMapViewController: NavigationViewDelegate {
         }
     }
 
-    private func roadFeature(for line: MGLPolylineFeature) -> (roadName: String?, shieldName: NSAttributedString?) {
-        let roadNameRecord = roadFeatureHelper(ref: line.attribute(forKey: "ref"),
-                                               shield: line.attribute(forKey: "shield"),
-                                               reflen: line.attribute(forKey: "reflen"),
-                                               name: line.attribute(forKey: "name"))
-
-        return (roadName: roadNameRecord.roadName, shieldName: roadNameRecord.shieldName)
-    }
-
-    private func roadFeature(for line: MGLMultiPolylineFeature) -> (roadName: String?, shieldName: NSAttributedString?) {
-        let roadNameRecord = roadFeatureHelper(ref: line.attribute(forKey: "ref"),
-                                               shield: line.attribute(forKey: "shield"),
-                                               reflen: line.attribute(forKey: "reflen"),
-                                               name: line.attribute(forKey: "name"))
-
-        return (roadName: roadNameRecord.roadName, shieldName: roadNameRecord.shieldName)
-    }
-
-    private func roadFeatureHelper(ref: Any?, shield: Any?, reflen: Any?, name: Any?) -> (roadName: String?, shieldName: NSAttributedString?) {
+    private func roadFeature(for line: MGLFeature) -> (roadName: String?, shieldName: NSAttributedString?) {
         var currentShieldName: NSAttributedString?, currentRoadName: String?
 
-        if let text = ref as? String, let shieldID = shield as? String, let reflenDigit = reflen as? Int {
-            currentShieldName = roadShieldName(for: text, shield: shieldID, reflen: reflenDigit)
+        if let ref = line.attribute(forKey: "ref") as? String,
+            let shield = line.attribute(forKey: "shield") as? String,
+            let reflen = line.attribute(forKey: "reflen") as? Int {
+            let textColor = roadShieldTextColor(line: line) ?? .black
+            let imageName = "\(shield)-\(reflen)"
+            currentShieldName = roadShieldAttributedText(for: ref, textColor: textColor, imageName: imageName)
         }
 
-        if let roadName = name as? String {
+        if let roadName = line.attribute(forKey: "name") as? String {
             currentRoadName = roadName
         }
 
@@ -740,19 +729,41 @@ extension RouteMapViewController: NavigationViewDelegate {
 
         return (roadName: currentRoadName, shieldName: currentShieldName)
     }
+    
+    func roadShieldTextColor(line: MGLFeature) -> UIColor? {
+        guard let shield = line.attribute(forKey: "shield") as? String else {
+            return nil
+        }
+        
+        // shield_text_color is present in Mapbox Streets source v8 but not v7.
+        guard let shieldTextColor = line.attribute(forKey: "shield_text_color") as? String else {
+            let currentShield = HighwayShield.RoadType(rawValue: shield)
+            return currentShield?.textColor
+        }
+        
+        switch shieldTextColor {
+        case "black":
+            return .black
+        case "blue":
+            return .blue
+        case "white":
+            return .white
+        case "yellow":
+            return .yellow
+        case "orange":
+            return .orange
+        default:
+            return .black
+        }
+    }
 
-    private func roadShieldName(for text: String?, shield: String?, reflen: Int?) -> NSAttributedString? {
-        guard let text = text, let shield = shield, let reflen = reflen else { return nil }
-
-        let currentShield = HighwayShield.RoadType(rawValue: shield)
-        let textColor = currentShield?.textColor ?? .black
-        let imageName = "\(shield)-\(reflen)"
-
+    private func roadShieldAttributedText(for text: String, textColor: UIColor, imageName: String) -> NSAttributedString? {
         guard let image = mapView.style?.image(forName: imageName) else {
             return nil
         }
 
-        let attachment = RoadNameLabelAttachment(image: image, text: text, color: textColor, font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize), scale: UIScreen.main.scale)
+        let attachment = ShieldAttachment()
+        attachment.image = image.withCenteredText(text, color: textColor, font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize), scale: UIScreen.main.scale)
         return NSAttributedString(attachment: attachment)
     }
 

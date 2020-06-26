@@ -14,7 +14,6 @@ public protocol InstructionsCardContainerViewDelegate: VisualInstructionDelegate
      - parameter instruction: the `VisualInstruction` that will be presented.
      - parameter presented: the formatted string that is provided by the instruction presenter
      - returns: optionally, a customized NSAttributedString that will be presented instead of the default, or if nil, the default behavior will be used.
-     - note: This delegate method includes a default implementation that prints a warning to the console when this method is called. See `UnimplementedLogging` for details.
      */
     func primaryLabel(_ primaryLabel: InstructionLabel, willPresent instruction: VisualInstruction, as presented: NSAttributedString) -> NSAttributedString?
     
@@ -25,17 +24,22 @@ public protocol InstructionsCardContainerViewDelegate: VisualInstructionDelegate
      - parameter instruction: the `VisualInstruction` that will be presented.
      - parameter presented: the formatted string that is provided by the instruction presenter
      - returns: optionally, a customized NSAttributedString that will be presented instead of the default, or if nil, the default behavior will be used.
-     - note: This delegate method includes a default implementation that prints a warning to the console when this method is called. See `UnimplementedLogging` for details.     
      */
     func secondaryLabel(_ secondaryLabel: InstructionLabel, willPresent instruction: VisualInstruction, as presented: NSAttributedString) -> NSAttributedString?
 }
 
 public extension InstructionsCardContainerViewDelegate {
+    /**
+     `UnimplementedLogging` prints a warning to standard output the first time this method is called.
+     */
     func primaryLabel(_ primaryLabel: InstructionLabel, willPresent instruction: VisualInstruction, as presented: NSAttributedString) -> NSAttributedString? {
         logUnimplemented(protocolType: InstructionsCardContainerViewDelegate.self, level: .debug)
         return nil
     }
     
+    /**
+     `UnimplementedLogging` prints a warning to standard output the first time this method is called.
+     */
     func secondaryLabel(_ secondaryLabel: InstructionLabel, willPresent instruction: VisualInstruction, as presented: NSAttributedString) -> NSAttributedString? {
         logUnimplemented(protocolType: InstructionsCardContainerViewDelegate.self,level: .debug)
         return nil
@@ -215,7 +219,7 @@ public class InstructionsCardContainerView: UIView {
         
         let colors = [style.highlightedBackgroundColor.cgColor,
                       style.highlightedBackgroundColor.withAlphaComponent(alphaComponent).cgColor]
-        
+
         let containerGradientLayer = gradientLayer(for: self)
         var instructionsCardViewGradientLayer = gradientLayer(for: instructionsCardView)
         var lanesViewGradientLayer = gradientLayer(for: lanesView)
@@ -273,7 +277,7 @@ public class InstructionsCardContainerView: UIView {
     fileprivate func hightlightNextBannerView(_ gradientLayer: CAGradientLayer, colors: [CGColor]) {
         gradientLayer.colors = colors
         nextBannerView.maneuverView.primaryColor = style.nextBannerInstructionHighlightedColor
-        nextBannerView.maneuverView.secondaryColor = style.nextBannerInstructionHighlightedColor
+        nextBannerView.maneuverView.secondaryColor = style.nextBannerInstructionSecondaryHighlightedColor
         nextBannerView.instructionLabel.normalTextColor = style.nextBannerInstructionHighlightedColor
     }
     
@@ -286,7 +290,7 @@ public class InstructionsCardContainerView: UIView {
         instructionsCardView.distanceLabel.valueTextColor = style.distanceLabelHighlightedTextColor
         // maneuver view
         instructionsCardView.maneuverView.primaryColor = style.maneuverViewHighlightedColor
-        instructionsCardView.maneuverView.secondaryColor = style.maneuverViewHighlightedColor
+        instructionsCardView.maneuverView.secondaryColor = style.maneuverViewSecondaryHighlightedColor
     }
 }
 

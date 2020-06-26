@@ -100,7 +100,7 @@ public typealias UnpackCompletionHandler = (_ numberOfTiles: UInt64, _ error: Er
  If the request was canceled or there was an error obtaining the routes, this argument is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
  - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
  */
-public typealias OfflineRouteCompletionHandler = ([MapboxDirections.Waypoint]?, [MapboxDirections.Route]?, OfflineRoutingError?) -> Void
+public typealias OfflineRouteCompletionHandler = (_ session: Directions.Session, _ result: Result<RouteResponse, OfflineRoutingError>) -> Void
 
 /**
  A `NavigationDirections` object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to a built-in routing engine and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A `RouteOptions` object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned. In addition to `Directions`, `NavigationDirections` provides support for offline routing.
@@ -108,6 +108,7 @@ public typealias OfflineRouteCompletionHandler = ([MapboxDirections.Waypoint]?, 
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
 public class NavigationDirections: Directions {
+
 	public override init(accessToken: String? = nil, host: String? = nil, path: String? = nil) {
 		super.init(accessToken: accessToken, host: host, path: path)
     }
@@ -120,7 +121,8 @@ public class NavigationDirections: Directions {
      */
     public func configureRouter(tilesURL: URL, completionHandler: @escaping NavigationDirectionsCompletionHandler) {
         NavigationDirectionsConstants.offlineSerialQueue.sync {
-            let tileCount = self.navigator.configureRouter(forTilesPath: tilesURL.path)
+            let params = RouterParams(tilesPath: tilesURL.path, inMemoryTileCache: nil, mapMatchingSpatialCache: nil, threadsCount: nil, endpointConfig: nil)
+            let tileCount = self.navigator.configureRouter(for: params, httpInterface: nil)
             DispatchQueue.main.async {
                 completionHandler(tileCount)
             }
@@ -155,7 +157,7 @@ public class NavigationDirections: Directions {
             let tilePath = filePathURL.path
             let outputPath = outputDirectoryURL.path
             
-            let numberOfTiles = MBNavigator().unpackTiles(forPacked_tiles_path: tilePath, output_directory: outputPath)
+            let numberOfTiles = Navigator().unpackTiles(forPackedTilesPath: tilePath, outputDirectory: outputPath)
             
             // Report 100% progress
             progressHandler?(totalPackedBytes, totalPackedBytes)
@@ -183,31 +185,32 @@ public class NavigationDirections: Directions {
     public func calculate(_ options: RouteOptions, offline: Bool = true, completionHandler: @escaping OfflineRouteCompletionHandler) {
         
         guard offline else {
-            super.calculate(options) { (waypoints, routes, error) in
-                let offlineError: OfflineRoutingError?
-                if let error = error {
-                    offlineError = .standard(error)
-                } else {
-                    offlineError = nil
+            super.calculate(options) { (session, result) in
+                
+                switch result {
+                case let .failure(directionsError):
+                    completionHandler(session, .failure(.standard(directionsError)))
+                case let .success(response):
+                    completionHandler(session, .success(response))
                 }
-                completionHandler(waypoints, routes, offlineError)
             }
             return
         }
         
         let url = self.url(forCalculating: options)
+        let session: Directions.Session = (options: options, credentials: self.credentials)
         
         NavigationDirectionsConstants.offlineSerialQueue.async { [weak self] in
             guard let result = self?.navigator.getRouteForDirectionsUri(url.absoluteString) else {
                 DispatchQueue.main.async {
-                    completionHandler(nil, nil, .noData)
+                    completionHandler(session, .failure(.noData))
                 }
                 return
             }
             
             guard let data = result.json.data(using: .utf8) else {
                 DispatchQueue.main.async {
-                    completionHandler(nil, nil, .invalidResponse)
+                    completionHandler(session, .failure(.invalidResponse))
                 }
                 return
             }
@@ -216,27 +219,28 @@ public class NavigationDirections: Directions {
                 do {
                     let decoder = JSONDecoder()
                     decoder.userInfo[.options] = options
+                    decoder.userInfo[.credentials] = session.credentials
                     let response = try decoder.decode(RouteResponse.self, from: data)
-                    guard let routes = response.routes else {
-                        return completionHandler(response.waypoints, nil, .standard(.unableToRoute))
+                    guard let routes = response.routes, !routes.isEmpty else {
+                        return completionHandler(session, .failure(.standard(.unableToRoute)))
                     }
-                    return completionHandler(response.waypoints, routes, nil)
+                    return completionHandler(session, .success(response))
                 }
                 catch {
-                    return completionHandler(nil, nil, .unknown(underlying: error))
+                    return completionHandler(session, .failure(.unknown(underlying: error)))
                 }
                 
             }
         }
     }
     
-    var _navigator: MBNavigator!
-    var navigator: MBNavigator {
+    var _navigator: Navigator!
+    var navigator: Navigator {
         assert(currentQueueName() == NavigationDirectionsConstants.offlineSerialQueueLabel,
                "The offline navigator must be accessed from the dedicated serial queue")
         
         if _navigator == nil {
-            self._navigator = MBNavigator()
+            self._navigator = Navigator()
         }
         
         return _navigator

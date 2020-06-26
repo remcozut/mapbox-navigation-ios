@@ -8,36 +8,41 @@ import MapboxCoreNavigation
 public protocol StyleManagerDelegate: class, UnimplementedLogging {
     /**
      Asks the delegate for a location to use when calculating sunset and sunrise
-     - note: This delegate method includes a default implementation that prints a warning to the console when this method is called. See `UnimplementedLogging` for details.     .
      */
     func location(for styleManager: StyleManager) -> CLLocation?
     
     /**
      Informs the delegate that a style was applied.
-     This delegate method is the equivalent of `Notification.Name.styleManagerDidApplyStyle`.
-
-     - note: This delegate method includes a default implementation that prints a warning to the console when this method is called. See `UnimplementedLogging` for details.
      
+     This delegate method is the equivalent of `Notification.Name.styleManagerDidApplyStyle`.
      */
     func styleManager(_ styleManager: StyleManager, didApply style: Style)
     
     /**
      Informs the delegate that the manager forcefully refreshed UIAppearance.
-     - note: This delegate method includes a default implementation that prints a warning to the console when this method is called. See `UnimplementedLogging` for details.
      */
     func styleManagerDidRefreshAppearance(_ styleManager: StyleManager)
 }
 
 public extension StyleManagerDelegate {
+    /**
+     `UnimplementedLogging` prints a warning to standard output the first time this method is called.
+     */
     func location(for styleManager: StyleManager) -> CLLocation? {
         logUnimplemented(protocolType: StyleManagerDelegate.self, level: .debug)
         return nil
     }
     
+    /**
+     `UnimplementedLogging` prints a warning to standard output the first time this method is called.
+     */
     func styleManager(_ styleManager: StyleManager, didApply style: Style) {
         logUnimplemented(protocolType: StyleManagerDelegate.self, level: .debug)
     }
     
+    /**
+     `UnimplementedLogging` prints a warning to standard output the first time this method is called.
+     */
     func styleManagerDidRefreshAppearance(_ styleManager: StyleManager) {
         logUnimplemented(protocolType: StyleManagerDelegate.self, level: .debug)
     }
@@ -47,7 +52,7 @@ public extension StyleManagerDelegate {
  A manager that handles `Style` objects. The manager listens for significant time changes
  and changes to the content size to apply an approriate style for the given condition.
  */
-open class StyleManager: NSObject {
+open class StyleManager {
     /**
      The receiver of the delegate. See `StyleManagerDelegate` for more information.
      */
@@ -80,6 +85,7 @@ open class StyleManager: NSObject {
     }
     
     internal var date: Date?
+    private var timeOfDayTimer: Timer?
     
     var currentStyleType: StyleType?
     private(set) var currentStyle: Style? {
@@ -89,15 +95,14 @@ open class StyleManager: NSObject {
         }
     }
     
-    public override init() {
-        super.init()
+    public init() {
         resumeNotifications()
         resetTimeOfDayTimer()
     }
     
     deinit {
         suspendNotifications()
-        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(timeOfDayChanged), object: nil)
+        timeOfDayTimer?.invalidate()
     }
     
     func resumeNotifications() {
@@ -111,7 +116,7 @@ open class StyleManager: NSObject {
     }
     
     func resetTimeOfDayTimer() {
-        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(timeOfDayChanged), object: nil)
+        timeOfDayTimer?.invalidate()
         
         guard automaticallyAdjustsStyleForTimeOfDay && styles.count > 1 else { return }
         guard let location = delegate?.location(for:self) else { return }
@@ -127,7 +132,11 @@ open class StyleManager: NSObject {
             return
         }
         
-        perform(#selector(timeOfDayChanged), with: nil, afterDelay: interval+1)
+        timeOfDayTimer = Timer(timeInterval: interval + 1,
+                               repeats: false,
+                               block: { [weak self] _ in
+            self?.timeOfDayChanged()
+        })
     }
     
     @objc func preferredContentSizeChanged(_ notification: Notification) {

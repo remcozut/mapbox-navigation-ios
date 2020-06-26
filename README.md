@@ -36,11 +36,7 @@ To install Mapbox Navigation using [CocoaPods](https://cocoapods.org/):
 
 1. Create a [Podfile](https://guides.cocoapods.org/syntax/podfile.html) with the following specification:
    ```ruby
-   # Latest stable release
-   pod 'MapboxNavigation', '~> 0.38.0'
-   # Latest prerelease
-   pod 'MapboxCoreNavigation', :git => 'https://github.com/mapbox/mapbox-navigation-ios.git', :tag => 'v1.0.0-alpha.1'
-   pod 'MapboxNavigation', :git => 'https://github.com/mapbox/mapbox-navigation-ios.git', :tag => 'v1.0.0-alpha.1'
+   pod 'MapboxNavigation', '~> 0.40.0'
    ```
 
 1. Run `pod repo update && pod install` and open the resulting Xcode workspace.
@@ -51,15 +47,12 @@ Alternatively, to install Mapbox Navigation using [Carthage](https://github.com/
 
 1. Create a [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#github-repositories) with the following dependency:
    ```cartfile
-   // Latest stable release
-   github "mapbox/mapbox-navigation-ios" ~> 0.38
-   // Latest prerelease
-   github "mapbox/mapbox-navigation-ios" "v1.0.0-alpha.1"
+   github "mapbox/mapbox-navigation-ios" ~> 0.40
    ```
 
 1. Run `carthage update --platform iOS` to build just the iOS dependencies.
 
-1. Follow the rest of [Carthage’s iOS integration instructions](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos). Your application target’s Embedded Frameworks should include `MapboxNavigation.framework`, `MapboxCoreNavigation.framework`, and `MapboxNavigationNative.framework`.
+1. Follow the rest of [Carthage’s iOS integration instructions](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos). Your application target’s Embedded Frameworks should include `MapboxNavigation.framework`, `MapboxCoreNavigation.framework`, `MapboxNavigationNative.framework`, and `MapboxAccounts.framework`.
 
 ## Configuration
 
@@ -68,7 +61,7 @@ Alternatively, to install Mapbox Navigation using [Carthage](https://github.com/
 1. In order for the SDK to track the user’s location as they move along the route, set `NSLocationWhenInUseUsageDescription` to:
    > Shows your location on the map and helps improve the map.
 
-1. Users expect the SDK to continue to track the user’s location and deliver audible instructions even while a different application is visible or the device is locked. Go to the Capabilities tab. Under the Background Modes section, enable “Audio, AirPlay, and Picture in Picture” and “Location updates”. (Alternatively, add the `audio` and `location` values to the `UIBackgroundModes` array in the Info tab.)
+1. Users expect the SDK to continue to track the user’s location and deliver audible instructions even while a different application is visible or the device is locked. Go to the Signing & Capabilities tab. Under the Background Modes section, enable “Audio, AirPlay, and Picture in Picture” and “Location updates”. (Alternatively, add the `audio` and `location` values to the `UIBackgroundModes` array in the Info tab.)
 
 Now import the relevant modules and present a new `NavigationViewController`. You can also [push to a navigation view controller from within a storyboard](https://docs.mapbox.com/ios/navigation/overview/storyboards/) if your application’s UI is laid out in Interface Builder.
 
@@ -79,17 +72,27 @@ import MapboxNavigation
 ```
 
 ```swift
+// Define two waypoints to travel between
 let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox")
 let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House")
 
-let options = NavigationRouteOptions(waypoints: [origin, destination])
+// Set options
+let routeOptions = NavigationRouteOptions(waypoints: [origin, destination])
 
-Directions.shared.calculate(options) { (waypoints, routes, error) in
-    guard let route = routes?.first else { return }
- 
-    let viewController = NavigationViewController(for: route)
-    viewController.modalPresentationStyle = .fullScreen
-    present(viewController, animated: true, completion: nil)
+// Request a route using MapboxDirections
+Directions.shared.calculate(routeOptions) { [weak self] (session, result) in
+    switch result {
+    case .failure(let error):
+        print(error.localizedDescription)
+    case .success(let response):
+        guard let route = response.routes?.first, let strongSelf = self else {
+            return
+        }
+        // Pass the generated route to the the NavigationViewController
+        let viewController = NavigationViewController(for: route, routeOptions: routeOptions)
+        viewController.modalPresentationStyle = .fullScreen
+        strongSelf.present(viewController, animated: true, completion: nil)
+    }
 }
 ```
 
@@ -132,8 +135,8 @@ class CustomStyle: DayStyle {
 then initialize `NavigationViewController` with your style or styles:
 
 ```swift
-let options = NavigationOptions(styles: [CustomStyle()])
-NavigationViewController(for: route, options: options)
+let navigationOptions = NavigationOptions(styles: [CustomStyle()])
+NavigationViewController(for: route, routeOptions: routeOptions, navigationOptions: navigationOptions)
 ```
 
 ### Starting from scratch

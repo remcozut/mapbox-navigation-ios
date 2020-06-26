@@ -274,14 +274,14 @@ public class CarPlayNavigationViewController: UIViewController, NavigationMapVie
                 mapView?.setContentInset(contentInset(forOverviewing: false), animated: true, completionHandler: nil)
             } else if tracksUserCourse && !newValue {
                 isOverviewingRoutes = !isPanningAway
-                guard let userLocation = self.navigationService.router.location?.coordinate,
-                    let coordinates = navigationService.route.shape?.coordinates else {
+                guard let userLocation = self.navigationService.router.location,
+                    let shape = navigationService.route.shape else {
                     return
                 }
                 mapView?.enableFrameByFrameCourseViewTracking(for: 1)
                 mapView?.contentInset = contentInset(forOverviewing: isOverviewingRoutes)
                 if (isOverviewingRoutes) {
-                    mapView?.setOverheadCameraView(from: userLocation, along: coordinates, for: contentInset(forOverviewing: true))
+                    mapView?.setOverheadCameraView(from: userLocation, along: shape, for: contentInset(forOverviewing: true))
                 }
             }
         }
@@ -542,7 +542,6 @@ public protocol CarPlayNavigationDelegate: class, UnimplementedLogging {
      
      - parameter carPlayNavigationViewController: The CarPlay navigation view controller that was dismissed.
      - parameter canceled: True if the user dismissed the CarPlay navigation view controller by tapping the Cancel button; false if the navigation view controller dismissed by some other means.
-     - note: This delegate method includes a default implementation that prints a warning to the console when this method is called. See `UnimplementedLogging` for details.     
      */
     func carPlayNavigationViewControllerDidDismiss(_ carPlayNavigationViewController: CarPlayNavigationViewController, byCanceling canceled: Bool)
     
@@ -554,6 +553,9 @@ public protocol CarPlayNavigationDelegate: class, UnimplementedLogging {
 
 @available(iOS 12.0, *)
 public extension CarPlayNavigationDelegate {
+    /**
+     `UnimplementedLogging` prints a warning to standard output the first time this method is called.
+     */
     func carPlayNavigationViewControllerDidDismiss(_ carPlayNavigationViewController: CarPlayNavigationViewController, byCanceling canceled: Bool) {
         logUnimplemented(protocolType: CarPlayNavigationDelegate.self, level: .debug)
     }

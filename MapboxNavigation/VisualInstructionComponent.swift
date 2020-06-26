@@ -9,14 +9,17 @@ extension VisualInstruction.Component {
         case let .exit(representation), let .exitCode(representation):
             let exitCode = representation.text
             return "exit-" + exitCode + "-\(VisualInstruction.Component.scale)"
-        case let .image(representation):
-            guard let imageURL = representation.image.imageBaseURL else {
-                return "generic-" + representation.alternativeText.text
+        case let .image(imageRepresentation, alternativeText):
+            guard let imageURL = imageRepresentation.imageBaseURL else {
+                return "generic-" + alternativeText.text
             }
             
             return "\(imageURL.absoluteString)-\(VisualInstruction.Component.scale)"
         case .text, .delimiter, .lane:
             return nil
+        case .guidanceView(let guidanceViewRepresentation, _):
+            guard let imageURL = guidanceViewRepresentation.imageURL else { return nil }
+            return "guidance-" + imageURL.absoluteString
         }
     }
 }

@@ -2,7 +2,7 @@ import Foundation
 import MapboxNavigationNative
 import CoreLocation
 
-extension MBFixLocation {
+extension FixLocation {
     convenience init(_ location: CLLocation) {
         self.init(coordinate: location.coordinate,
                   time: location.timestamp,
@@ -14,6 +14,7 @@ extension MBFixLocation {
     }
 }
 
+/// :nodoc:
 extension MBRouteState: CustomStringConvertible {
     public var description: String {
         switch self {

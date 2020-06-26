@@ -174,9 +174,9 @@ workflows:
   workflow:
     jobs:
       - build-job:
-          name: "Xcode_11.1_iOS_13.1"
-          xcode: "11.1.0"
-          iOS: "13.1"
+          name: "Xcode_11.4_iOS_13.4"
+          xcode: "11.4.0"
+          iOS: "13.4"
           device: "iPhone 8 Plus"
       - build-job:
           name: "Xcode_10.3_iOS_12.1"
@@ -185,18 +185,18 @@ workflows:
           codecoverage: true
       - build-job:
           name: "Xcode_10.2_iOS_10.3.1"
-          xcode: "10.2.0"
+          xcode: "10.2.1"
           iOS: "10.3.1"
           test: false
       - pod-job:
           name: "Xcode_10.2_iOS_12.2_CP_install"
           update: false
-          xcode: "10.2.0"
+          xcode: "10.2.1"
           iOS: "12.2"
       - pod-job:
           name: "Xcode_10.2_iOS_12.2_CP_update"
           update: true
-          xcode: "10.2.0"
+          xcode: "10.2.1"
           iOS: "12.2"
           lint: true
       - xcode-10-examples
