@@ -856,7 +856,7 @@
 		8DF8E4E52202696800B29FEF /* MapboxNavigation.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MapboxNavigation.podspec; sourceTree = "<group>"; };
 		8DF8E4E62202696800B29FEF /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		8DFD949D221F66BE00152F45 /* BottomBannerSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBannerSnapshotTests.swift; sourceTree = "<group>"; };
-		8DFD949F2224ABE900152F45 /* SnappyShrimp.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnappyShrimp.framework; path = Carthage/Build/iOS/SnappyShrimp.framework; sourceTree = "<group>"; };
+		8DFD949F2224ABE900152F45 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		AE00A739209A2C38006A3DC7 /* StepsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsViewControllerTests.swift; sourceTree = "<group>"; };
 		AE46F95420EA735B00537AC2 /* VisualInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualInstruction.swift; sourceTree = "<group>"; };
 		AE47A32122B1F6AD0096458C /* InstructionsCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionsCardCell.swift; sourceTree = "<group>"; };
@@ -1504,7 +1504,7 @@
 		A9E2B43473B53369153F54C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8DFD949F2224ABE900152F45 /* SnappyShrimp.framework */,
+				8DFD949F2224ABE900152F45 /* Cartfile */,
 				8D424F26215ECA5D00432491 /* CoreLocation.framework */,
 				1603C890214351EE00167D95 /* Cedar.framework */,
 				35C98734212E042C00808B82 /* MapboxNavigationNative.framework */,
