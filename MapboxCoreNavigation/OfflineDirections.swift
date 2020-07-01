@@ -109,9 +109,7 @@ public typealias OfflineRouteCompletionHandler = (_ session: Directions.Session,
  */
 public class NavigationDirections: Directions {
 
-	public override init(accessToken: String? = nil, host: String? = nil, path: String? = nil) {
-		super.init(accessToken: accessToken, host: host, path: path)
-    }
+
     
     /**
      Configures the router with the given set of tiles.

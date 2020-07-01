@@ -39,7 +39,6 @@
 		35025F3F1F051DD2002BA3EA /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35025F3E1F051DD2002BA3EA /* DialogViewController.swift */; };
 		3504DF7522B79B1D00D2FD3C /* MapboxAccounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3504DF7322B79AF300D2FD3C /* MapboxAccounts.framework */; };
 		3504DF7622B79B1D00D2FD3C /* MapboxAccounts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3504DF7322B79AF300D2FD3C /* MapboxAccounts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3504DF7722B79B2E00D2FD3C /* MapboxAccounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3504DF7322B79AF300D2FD3C /* MapboxAccounts.framework */; };
 		3507F9FB2134309E0086B39E /* MapboxGeocoder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3507F9F92134305C0086B39E /* MapboxGeocoder.framework */; };
 		3507F9FC2134309E0086B39E /* MapboxGeocoder.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3507F9F92134305C0086B39E /* MapboxGeocoder.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		350E2C5F22707EB80014CEB3 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350E2C5E22707EB80014CEB3 /* UIScreen.swift */; };
@@ -84,8 +83,6 @@
 		353E69041EF0C4E5007B2AE5 /* SimulatedLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353E69031EF0C4E5007B2AE5 /* SimulatedLocationManager.swift */; };
 		353EC9D71FB09708002EB0AB /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353EC9D61FB09708002EB0AB /* StepsViewController.swift */; };
 		3540514D1F73F3BB00ED572D /* route-with-straight-roundabout.json in Resources */ = {isa = PBXBuildFile; fileRef = 3540514C1F73F3BB00ED572D /* route-with-straight-roundabout.json */; };
-		354A01B91E66256600D765C2 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01B81E66256600D765C2 /* MapboxDirections.framework */; };
-		354A01BF1E6625D100D765C2 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A1D3651E6624EF00A48FE8 /* Mapbox.framework */; };
 		354A01C21E66265100D765C2 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A1D3651E6624EF00A48FE8 /* Mapbox.framework */; };
 		354A01C31E66265100D765C2 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35A1D3651E6624EF00A48FE8 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		354A01C91E66265B00D765C2 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01BC1E66259600D765C2 /* Polyline.framework */; };
@@ -131,7 +128,6 @@
 		3597B9A42149B2C20021B0D9 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352AFFA22139986E00EB3567 /* UIViewController.swift */; };
 		359A8AED1FA78D3000BDB486 /* DistanceFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A8AEC1FA78D3000BDB486 /* DistanceFormatterTests.swift */; };
 		359A8AEF1FA7B25B00BDB486 /* LanesStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A8AEE1FA7B25800BDB486 /* LanesStyleKit.swift */; };
-		359D00CF1E732D7100C2E770 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01BC1E66259600D765C2 /* Polyline.framework */; };
 		359D1B281FFE70D30052FA42 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D1B271FFE70D30052FA42 /* NavigationView.swift */; };
 		359D283C1F9DC14F00FDE9C9 /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D283B1F9DC14F00FDE9C9 /* UICollectionView.swift */; };
 		35A262B92050A5CD00AEFF6D /* InstructionsBannerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A262B82050A5CD00AEFF6D /* InstructionsBannerViewSnapshotTests.swift */; };
@@ -166,13 +162,9 @@
 		35C8DC172191E5DB0053328C /* NavigationServiceTestDoubles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA93EBD6E6BEC966BBE51D6 /* NavigationServiceTestDoubles.swift */; };
 		35C98731212E02B500808B82 /* RouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C98730212E02B500808B82 /* RouteController.swift */; };
 		35C98733212E037900808B82 /* MBNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C98732212E037900808B82 /* MBNavigator.swift */; };
-		35C98735212E042C00808B82 /* MapboxNavigationNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; };
 		35C98736212E045200808B82 /* MapboxNavigationNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; };
-		35C98738212E045300808B82 /* MapboxNavigationNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; };
 		35C9973F1E732C1B00544D1C /* RouteVoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C9973E1E732C1B00544D1C /* RouteVoiceController.swift */; };
 		35CB1E131F97DD740011CC44 /* FeedbackItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CB1E121F97DD740011CC44 /* FeedbackItem.swift */; };
-		35CC14151F7994B0009E872A /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; };
-		35CC14161F7994B1009E872A /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; };
 		35CC14171F79A434009E872A /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; };
 		35CC14181F79A434009E872A /* Turf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		35CDA80921908F2F0072B675 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CDA80821908F2F0072B675 /* AppDelegate.swift */; };
@@ -367,7 +359,6 @@
 		C5D9800F1EFBCDAD006DBF2E /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D9800E1EFBCDAD006DBF2E /* Date.swift */; };
 		C5DE4B6220F6B6B3007AFBE6 /* CustomStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51FC31620F689F800400CE7 /* CustomStyles.swift */; };
 		C5E7A31C1F4F6828001CB015 /* NavigationRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E7A31B1F4F6828001CB015 /* NavigationRouteOptions.swift */; };
-		C5EA98721F19414C00C8AA16 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C549F8311F17F2C5001A0A2D /* MapboxMobileEvents.framework */; };
 		C5F4D21920DC468B0059FABF /* CongestionLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F4D21820DC468B0059FABF /* CongestionLevel.swift */; };
 		C5FFAC1520D96F5C009E7F98 /* CarPlayNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFAC1420D96F5B009E7F98 /* CarPlayNavigationViewController.swift */; };
 		CFD47D9020FD85EC00BC1E49 /* MGLAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD47D8F20FD85EC00BC1E49 /* MGLAccountManager.swift */; };
@@ -409,6 +400,23 @@
 		DADD82802161EC0300B8B47D /* UIViewAnimationOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD827F2161EC0300B8B47D /* UIViewAnimationOptionsTests.swift */; };
 		DAE22A2921C9DEDA00CA269D /* MGLVectorTileSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE22A2821C9DEDA00CA269D /* MGLVectorTileSourceTests.swift */; };
 		DAFA92071F01735000A7FB09 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351BEC0B1E5BCC72006FE110 /* DistanceFormatter.swift */; };
+		ECDBD13224A78729009CFD45 /* MapboxNavigationNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; };
+		ECDBD13324A78729009CFD45 /* MapboxNavigationNative.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD13524A78732009CFD45 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A1D3651E6624EF00A48FE8 /* Mapbox.framework */; };
+		ECDBD13724A78736009CFD45 /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; };
+		ECDBD13824A78736009CFD45 /* Turf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD13924A7873F009CFD45 /* MapboxAccounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3504DF7322B79AF300D2FD3C /* MapboxAccounts.framework */; };
+		ECDBD13A24A7873F009CFD45 /* MapboxAccounts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3504DF7322B79AF300D2FD3C /* MapboxAccounts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD13C24A78743009CFD45 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01B81E66256600D765C2 /* MapboxDirections.framework */; };
+		ECDBD13D24A78743009CFD45 /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01B81E66256600D765C2 /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD13E24A78745009CFD45 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C549F8311F17F2C5001A0A2D /* MapboxMobileEvents.framework */; };
+		ECDBD13F24A78745009CFD45 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C549F8311F17F2C5001A0A2D /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD14024A78747009CFD45 /* MapboxNavigationNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; };
+		ECDBD14124A78748009CFD45 /* MapboxNavigationNative.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35C98734212E042C00808B82 /* MapboxNavigationNative.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD14224A7874B009CFD45 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01BC1E66259600D765C2 /* Polyline.framework */; };
+		ECDBD14324A7874B009CFD45 /* Polyline.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 354A01BC1E66259600D765C2 /* Polyline.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDBD14424A7874C009CFD45 /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; };
+		ECDBD14524A7874C009CFD45 /* Turf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 35CC14141F799496009E872A /* Turf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -624,6 +632,34 @@
 				C53F2F0020EBC95600D9798F /* MapboxSpeech.framework in Embed Frameworks */,
 				C53F2F0120EBC95600D9798F /* Polyline.framework in Embed Frameworks */,
 				C53F2F0220EBC95600D9798F /* Mapbox.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECDBD13424A7872A009CFD45 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ECDBD13824A78736009CFD45 /* Turf.framework in Embed Frameworks */,
+				ECDBD13324A78729009CFD45 /* MapboxNavigationNative.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECDBD13B24A7873F009CFD45 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ECDBD14124A78748009CFD45 /* MapboxNavigationNative.framework in Embed Frameworks */,
+				ECDBD14324A7874B009CFD45 /* Polyline.framework in Embed Frameworks */,
+				ECDBD13F24A78745009CFD45 /* MapboxMobileEvents.framework in Embed Frameworks */,
+				ECDBD14524A7874C009CFD45 /* Turf.framework in Embed Frameworks */,
+				ECDBD13A24A7873F009CFD45 /* MapboxAccounts.framework in Embed Frameworks */,
+				ECDBD13D24A78743009CFD45 /* MapboxDirections.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1092,10 +1128,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECDBD13224A78729009CFD45 /* MapboxNavigationNative.framework in Frameworks */,
 				8D424F28215ECAF200432491 /* CoreLocation.framework in Frameworks */,
-				354A01BF1E6625D100D765C2 /* Mapbox.framework in Frameworks */,
-				35C98738212E045300808B82 /* MapboxNavigationNative.framework in Frameworks */,
-				35CC14161F7994B1009E872A /* Turf.framework in Frameworks */,
+				ECDBD13524A78732009CFD45 /* Mapbox.framework in Frameworks */,
+				ECDBD13724A78736009CFD45 /* Turf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1122,12 +1158,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3504DF7722B79B2E00D2FD3C /* MapboxAccounts.framework in Frameworks */,
-				C5EA98721F19414C00C8AA16 /* MapboxMobileEvents.framework in Frameworks */,
-				354A01B91E66256600D765C2 /* MapboxDirections.framework in Frameworks */,
-				35C98735212E042C00808B82 /* MapboxNavigationNative.framework in Frameworks */,
-				359D00CF1E732D7100C2E770 /* Polyline.framework in Frameworks */,
-				35CC14151F7994B0009E872A /* Turf.framework in Frameworks */,
+				ECDBD14224A7874B009CFD45 /* Polyline.framework in Frameworks */,
+				ECDBD13E24A78745009CFD45 /* MapboxMobileEvents.framework in Frameworks */,
+				ECDBD13924A7873F009CFD45 /* MapboxAccounts.framework in Frameworks */,
+				ECDBD14424A7874C009CFD45 /* Turf.framework in Frameworks */,
+				ECDBD13C24A78743009CFD45 /* MapboxDirections.framework in Frameworks */,
+				ECDBD14024A78747009CFD45 /* MapboxNavigationNative.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1874,6 +1910,7 @@
 				351BEBD51E5BCC28006FE110 /* Resources */,
 				8DFD94A12224AC1A00152F45 /* ShellScript */,
 				351BEBD31E5BCC28006FE110 /* Frameworks */,
+				ECDBD13424A7872A009CFD45 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2037,6 +2074,7 @@
 				C5ADFBC61DDCC7840011824B /* Headers */,
 				C5ADFBC71DDCC7840011824B /* Resources */,
 				35A7DBEB1E3A1C59000BAB5C /* Frameworks */,
+				ECDBD13B24A7873F009CFD45 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2107,7 +2145,7 @@
 					};
 					35CDA80521908F2F0072B675 = {
 						CreatedOnToolsVersion = 10.1;
-						DevelopmentTeam = GJZR2MEM28;
+						DevelopmentTeam = Z4K23W47UU;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -2141,7 +2179,7 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = Z4K23W47UU;
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					C5ADFBD11DDCC7840011824B = {
 						CreatedOnToolsVersion = 8.1;
@@ -3143,7 +3181,7 @@
 		351BEBDC1E5BCC28006FE110 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -3164,6 +3202,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 			};
 			name = Debug;
 		};
@@ -3189,6 +3228,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 			};
 			name = Release;
 		};
@@ -3282,7 +3322,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = GJZR2MEM28;
+				DEVELOPMENT_TEAM = Z4K23W47UU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -3309,7 +3349,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GJZR2MEM28;
+				DEVELOPMENT_TEAM = Z4K23W47UU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -3681,8 +3721,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = Z4K23W47UU;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -3697,7 +3738,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxCoreNavigation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -3707,7 +3751,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = Z4K23W47UU;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -3722,7 +3767,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxCoreNavigation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
